@@ -25,7 +25,7 @@ Tired of waiting for code reviews? Say hello to **instant, AI-powered code analy
 
 *(This is the perfect place to add screenshots! A GIF of the app in action would be even more impressive.)*
 
-![Screenshot of CodeClarity Dashboard](public/dashboard-screenshot.png)
+![Screenshot of CodeClarity Dashboard](https://placehold.co/800x450.png?text=App+Screenshot+Here)
 
 ---
 
@@ -70,7 +70,7 @@ npm install
 # 5. Run the development server
 npm run dev
 ```
-The app will be available at `http://localhost:9002`.
+The app will be available at `http://localhost:9002` or `http://127.0.0.1:9002`
 
 ## 🤝 Contributing
 
