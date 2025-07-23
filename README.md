@@ -1,4 +1,4 @@
-# 🚀 CodeClarity: Your AI-Powered Code Review Assistant
+# 🚀 CodeClarity: AI-Powered Code Review Assistant
 
 > **The 24/7 Senior Developer on your team** — Instant, insightful code reviews to help you ship with confidence.
 
@@ -8,7 +8,6 @@
   <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
   <img src="https://img.shields.io/badge/Google%20Gemini-8E77F7?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini" />
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" />
-  <img src="https://img.shields.io/badge/Version-1.0.0-blue.svg?style=for-the-badge" alt="Version: 1.0.0" />
 </div>
 
 ## ✨ Why CodeClarity?
@@ -24,9 +23,7 @@ Tired of waiting for code reviews? Say hello to **instant, AI-powered code analy
 
 ## 📸 App Preview
 
-*(This is the perfect place to add screenshots! A GIF of the app in action would be even more impressive.)*
-
-![Screenshot of CodeClarity Dashboard](https://placehold.co/800x450.png?text=App+Screenshot+Here)
+![A GIF showing the CodeClarity app in action. It demonstrates analyzing a local file, viewing suggestions, and then analyzing a GitHub Pull Request, including the text-to-speech feature.](public/codeclarity.gif)
 
 ---
 
@@ -71,7 +68,7 @@ npm install
 # 5. Run the development server
 npm run dev
 ```
-The app will be available at `http://localhost:9002` or `http://127.0.0.1:9002`
+The app will be available at `http://localhost:9002`.
 
 ## 🤝 Contributing
 
