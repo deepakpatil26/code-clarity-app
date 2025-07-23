@@ -25,7 +25,7 @@ Tired of waiting for code reviews? Say hello to **instant, AI-powered code analy
 
 *(This is the perfect place to add screenshots! A GIF of the app in action would be even more impressive.)*
 
-![Screenshot of CodeClarity Dashboard](https://placehold.co/800x450.png?text=App+Screenshot+Here)
+![Screenshot of CodeClarity Dashboard](public/dashboard-screenshot.png)
 
 ---
 
