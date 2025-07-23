@@ -29,7 +29,7 @@ Tired of waiting for code reviews? Say hello to **instant, AI-powered code analy
 
 ## 📸 App Preview
 
-![A GIF showing the CodeClarity app in action. It demonstrates analyzing a local file, viewing suggestions, and then analyzing a GitHub Pull Request, including the text-to-speech feature.](app-preview.gif)
+![A GIF showing the CodeClarity app in action. It demonstrates analyzing a local file, viewing suggestions, and then analyzing a GitHub Pull Request, including the text-to-speech feature.](public/codeclarity.gif)
 
 ---
 
