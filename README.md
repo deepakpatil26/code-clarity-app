@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
   <img src="https://img.shields.io/badge/Google%20Gemini-8E77F7?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini" />
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" />
+  <img src="https://img.shields.io/badge/Version-1.0.0-blue.svg?style=for-the-badge" alt="Version: 1.0.0" />
 </div>
 
 ## ✨ Why CodeClarity?
