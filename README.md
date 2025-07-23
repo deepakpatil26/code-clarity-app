@@ -1,6 +1,12 @@
-# 🚀 CodeClarity: AI-Powered Code Review Assistant
+# 🚀 CodeClarity: AI-Powered Code Review
 
 > **The 24/7 Senior Developer on your team** — Instant, insightful code reviews to help you ship with confidence.
+
+<div align="center">
+  <a href="https://code-clarity-app.vercel.app/" target="_blank">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel"/>
+  </a>
+</div>
 
 <div align="center">
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
@@ -23,13 +29,21 @@ Tired of waiting for code reviews? Say hello to **instant, AI-powered code analy
 
 ## 📸 App Preview
 
-![A GIF showing the CodeClarity app in action. It demonstrates analyzing a local file, viewing suggestions, and then analyzing a GitHub Pull Request, including the text-to-speech feature.](public/codeclarity.gif)
+![A GIF showing the CodeClarity app in action. It demonstrates analyzing a local file, viewing suggestions, and then analyzing a GitHub Pull Request, including the text-to-speech feature.](app-preview.gif)
 
 ---
 
-## 🚀 Key Features
+## 🚀 Deployment
 
-### 🎯 Smart Code Analysis
+This application is deployed on Vercel. You can access the live version here:
+
+**[https://code-clarity-app.vercel.app/](https://code-clarity-app.vercel.app/)**
+
+---
+
+## 🎯 Key Features
+
+### Smart Code Analysis
 - **Multi-language Support**: JavaScript, TypeScript, Python, Java, C++, and Go.
 - **Real-time Feedback**: Get actionable, line-by-line suggestions in the UI.
 - **Pull Request Integration**: Connect to your GitHub account to list repositories and analyze open pull requests.
@@ -40,7 +54,7 @@ Tired of waiting for code reviews? Say hello to **instant, AI-powered code analy
 - **Framework**: Next.js 14+ & React 18
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS & shadcn/ui
-- **Authentication**: Firebase Authentication
+- **Authentication**: Firebase Authentication (Email/Password & GitHub Provider)
 - **AI Integration**: Genkit with Google Gemini
 - **GitHub API**: Octokit for repository and PR management
 
