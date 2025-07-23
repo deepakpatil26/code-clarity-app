@@ -1,67 +1,80 @@
-# 🚀 CodeClarity: AI-Powered Code Review Assistant
+# 🚀 CodeClarity: Your AI-Powered Code Review Assistant
 
-> **Your 24/7 Senior Developer** - Instant, insightful code reviews powered by AI
+> **The 24/7 Senior Developer on your team** — Instant, insightful code reviews to help you ship with confidence.
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
-  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
-  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
-  <img src="https://img.shields.io/badge/AI-Powered-9cf?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
+  <img src="https://img.shields.io/badge/Google%20Gemini-8E77F7?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" />
 </div>
 
 ## ✨ Why CodeClarity?
 
-Tired of waiting for code reviews? Say hello to **instant, AI-powered code analysis** that helps you write better code, faster. 
+Tired of waiting for code reviews? Say hello to **instant, AI-powered code analysis** that helps you write better, more secure, and more efficient code.
 
-- ⚡ **Lightning-fast** feedback on every commit
-- 🔒 **Security** vulnerabilities caught before they become issues
-- 🎯 **Personalized** suggestions to level up your coding skills
-- 🤖 **24/7** code review assistant that never sleeps
+- ⚡ **Lightning-Fast Feedback**: Get suggestions as you analyze local files or review pull requests.
+- 🔒 **Catch Issues Early**: Find potential quality, performance, and security issues before they make it to production.
+- 🗣️ **Listen to Your Review**: A unique text-to-speech feature reads the analysis back to you.
+- 🤖 **Your 24/7 Code Partner**: An intelligent assistant that's always available to help you improve.
+
+---
+
+## 📸 App Preview
+
+*(This is the perfect place to add screenshots! A GIF of the app in action would be even more impressive.)*
+
+![Screenshot of CodeClarity Dashboard](https://placehold.co/800x450.png?text=App+Screenshot+Here)
+
+---
 
 ## 🚀 Key Features
 
 ### 🎯 Smart Code Analysis
-- Multi-language support: JavaScript, TypeScript, Python, Java, C++, Go
-- Real-time feedback with actionable suggestions
-- Performance optimization tips
-- Code quality metrics at a glance
-
-### 🔄 Seamless Integration
-- GitHub PR integration
-- CI/CD pipeline ready
-- Exportable reports (PDF/HTML)
-- Team collaboration features
+- **Multi-language Support**: JavaScript, TypeScript, Python, Java, C++, and Go.
+- **Real-time Feedback**: Get actionable, line-by-line suggestions in the UI.
+- **Pull Request Integration**: Connect to your GitHub account to list repositories and analyze open pull requests.
+- **Listen to Analysis**: Use the text-to-speech feature to hear an audio report of the suggestions.
+- **Exportable Reports**: Download analysis results as a standalone HTML file.
 
 ### 🛠️ Built With
-- **Frontend**: Next.js 14+, TypeScript, Tailwind CSS
-- **Backend**: Firebase (Auth, Firestore, Cloud Functions)
-- **AI**: Hugging Face, CodeBERT, CodeLlama
+- **Framework**: Next.js 14+ & React 18
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS & shadcn/ui
+- **Authentication**: Firebase Authentication
+- **AI Integration**: Genkit with Google Gemini
+- **GitHub API**: Octokit for repository and PR management
 
 ## 🏁 Getting Started
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/deepakpatil26/code-clarity-app.git
 
-# Install dependencies
+# 2. Navigate to the project directory
+cd code-clarity-app
+
+# 3. Install dependencies
 npm install
 
-# Run development server
+# 4. Set up your environment variables
+# Create a .env file in the root and add your Firebase project credentials.
+# You can get these from your Firebase project settings.
+# NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+# NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+# NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+# ... (and so on for all firebase config values)
+# GEMINI_API_KEY=your_gemini_api_key
+
+# 5. Run the development server
 npm run dev
 ```
-
-## 🌟 Why Developers Love Us
-
-> "CodeClarity caught a critical security vulnerability that three human reviewers missed!" - Sarah K., Senior Developer
-
-## 📈 Stats
-- 99.5% uptime
-- <30s analysis time
-- 85%+ analysis accuracy
+The app will be available at `http://localhost:9002`.
 
 ## 🤝 Contributing
 
-We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started.
+Contributions are welcome! If you have suggestions or want to improve the app, please feel free to open an issue or submit a pull request.
 
 ## 📄 License
 
@@ -72,14 +85,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   Made with ❤️ by Deepak Patil
 </div>
-
-- **API Limits**: Multiple fallback providers and local processing
-- **Payment Issues**: Free-tier focus with gradual monetization
-- **Scalability**: Firebase auto-scaling and caching strategies
-
-## 9. Future Roadmap
-
-**Short-term**: Mobile app, IDE extensions, advanced security detection
-**Long-term**: Custom model training, enterprise features, API marketplace
-
----
