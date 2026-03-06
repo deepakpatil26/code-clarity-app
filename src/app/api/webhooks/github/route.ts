@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { githubAppService } from "@/services/github-app";
 import { queuePRAnalysis } from "@/services/queue/analysis.queue";
-import { collections } from "@/lib/firebase-admin";
+import { collections, initializeFirebaseAdmin } from "@/lib/firebase-admin";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  initializeFirebaseAdmin();
   try {
     const signature = req.headers.get("x-hub-signature-256");
     const payload = await req.text();

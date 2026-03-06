@@ -6,20 +6,26 @@ import { Octokit } from "octokit";
  * Handles JWT authentication and installation-specific Octokits.
  */
 export class GitHubAppService {
-  private app: App;
+  private _app: App | null = null;
 
-  constructor() {
+  private get app(): App {
+    if (this._app) return this._app;
+
     const appId = process.env.GITHUB_APP_ID;
     const privateKey = process.env.GITHUB_APP_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
     if (!appId || !privateKey) {
+      // In production/runtime, these are required.
+      // During build, we don't want to throw at the module level.
       throw new Error("GITHUB_APP_ID or GITHUB_APP_PRIVATE_KEY is missing in env");
     }
 
-    this.app = new App({
+    this._app = new App({
       appId,
       privateKey,
     });
+
+    return this._app;
   }
 
   /**

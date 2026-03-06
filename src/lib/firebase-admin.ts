@@ -3,14 +3,18 @@ import { getFirestore } from "firebase-admin/firestore";
 
 export const initializeFirebaseAdmin = () => {
   if (getApps().length === 0) {
-    const serviceAccount = JSON.parse(
-      process.env.FIREBASE_SERVICE_ACCOUNT_KEY || "{}"
-    );
+    const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+    
+    if (!serviceAccountKey) {
+      // During build, we might not have this. Don't throw here.
+      // Throw only if we actually try to use the DB and it's missing.
+      return;
+    }
+
+    const serviceAccount = JSON.parse(serviceAccountKey);
 
     if (!serviceAccount.project_id) {
-      throw new Error(
-        "FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid in .env.local. Please generate a new private key from Firebase Console -> Project Settings -> Service accounts, and add it to your .env.local file."
-      );
+      return;
     }
 
     try {
@@ -24,8 +28,6 @@ export const initializeFirebaseAdmin = () => {
     }
   }
 };
-
-initializeFirebaseAdmin();
 
 // Initialize Firestore
 export const db = getFirestore();
