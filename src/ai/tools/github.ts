@@ -93,7 +93,7 @@ export const listPullRequestsTool = ai.defineTool(
       const prs = await octokit.rest.pulls.list({
         owner: input.owner,
         repo: input.repo,
-        state: "open",
+        state: "all",
         sort: "updated",
         direction: "desc",
         per_page: 30,
