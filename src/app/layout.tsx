@@ -33,7 +33,7 @@ export default function RootLayout({
           rel="stylesheet"
         ></link>
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <AuthProvider>
           <AppLayout>{children}</AppLayout>
           <Toaster />

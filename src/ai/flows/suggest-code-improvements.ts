@@ -6,7 +6,7 @@
  * - suggestCodeImprovements - A function that analyzes code and suggests line-by-line improvements.
  */
 
-import { ai } from "@/ai/genkit";
+import { ai, geminiModel } from "@/ai/genkit";
 import {
   SuggestCodeImprovementsInput,
   SuggestCodeImprovementsInputSchema,
@@ -24,7 +24,7 @@ const prompt = ai.definePrompt({
   name: "suggestCodeImprovementsPrompt",
   input: { schema: SuggestCodeImprovementsInputSchema },
   output: { schema: SuggestCodeImprovementsOutputSchema },
-  model: "googleai/gemini-1.5-flash",
+  model: geminiModel,
   prompt: `You are an AI code reviewer. Your task is to analyze the following code and provide line-by-line suggestions for code quality, security vulnerabilities, and performance optimization.
 
 **Instructions:**
@@ -60,7 +60,20 @@ const suggestCodeImprovementsFlow = ai.defineFlow(
     outputSchema: SuggestCodeImprovementsOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
-    return output!;
+    try {
+      const { output } = await prompt(input);
+      if (!output) {
+        return { suggestions: [] };
+      }
+      return output;
+    } catch (error) {
+      console.error("AI Analysis Error:", error);
+      // Return a friendly error as a suggestion so the user knows what happened
+      return { 
+        suggestions: [
+          `[line 1] [security/high] AI Analysis Error: ${error instanceof Error ? error.message : String(error)}. Please check your API key and model availability.`
+        ] 
+      };
+    }
   }
 );

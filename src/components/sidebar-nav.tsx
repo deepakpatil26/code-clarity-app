@@ -18,6 +18,7 @@ import {
   Settings,
   GitPullRequest,
   LogOut,
+  Code2,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -28,13 +29,19 @@ const menuItems = [
 ];
 
 const CodeClarityLogo = () => (
-  <Image
-    src="/logo.png"
-    alt="CodeClarity Logo"
-    width={64}
-    height={64}
-    className="h-16 w-16 rounded-full"
-  />
+  <div className="flex items-center gap-3 px-2 py-4">
+    <div className="bg-primary p-2 rounded-xl shadow-lg shadow-primary/20">
+      <Code2 className="text-white h-6 w-6" />
+    </div>
+    <div className="flex flex-col">
+      <span className="text-lg font-bold tracking-tight leading-none group-data-[collapsible=icon]:hidden">
+        CodeClarity
+      </span>
+      <span className="text-[10px] uppercase font-bold text-primary tracking-widest group-data-[collapsible=icon]:hidden">
+        Pro Account
+      </span>
+    </div>
+  </div>
 );
 
 export function SidebarNav() {
@@ -43,50 +50,60 @@ export function SidebarNav() {
 
   return (
     <>
-      <SidebarHeader className="flex items-center gap-2">
+      <SidebarHeader>
         <CodeClarityLogo />
-        <span className="text-xl font-semibold tracking-tight">
-          CodeClarity
-        </span>
       </SidebarHeader>
-      <SidebarContent className="p-2">
-        <SidebarMenu>
-          {menuItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <Link href={item.href} className="w-full">
-                <SidebarMenuButton
-                  tooltip={item.label}
-                  isActive={
-                    pathname === item.href ||
-                    (item.href === "/repositories" &&
-                      pathname.startsWith("/repositories"))
-                  }
-                  disabled={!user}
-                >
-                  <item.icon />
-                  <span>{item.label}</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-          ))}
+      <SidebarContent className="px-3 py-2">
+        <SidebarMenu className="gap-2">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href || (item.href === "/repositories" && pathname.startsWith("/repositories"));
+            return (
+              <SidebarMenuItem key={item.href}>
+                <Link href={item.href} className="w-full">
+                  <SidebarMenuButton
+                    tooltip={item.label}
+                    isActive={isActive}
+                    disabled={!user}
+                    className={`h-11 px-4 transition-all duration-300 rounded-xl ${
+                      isActive 
+                        ? "bg-primary/10 text-primary font-semibold border-r-2 border-primary" 
+                        : "hover:bg-secondary/80"
+                    }`}
+                  >
+                    <item.icon className={`h-5 w-5 ${isActive ? "text-primary" : "text-muted-foreground mr-2"}`} />
+                    <span className="ml-2">{item.label}</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="p-2">
+      <SidebarFooter className="p-4 mt-auto">
         {user && (
-          <div className="p-2">
+          <div className="space-y-4">
             <Button
-              variant="outline"
-              className="w-full justify-start"
+              variant="ghost"
+              className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
               onClick={signOut}
             >
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
+              <LogOut className="mr-3 h-4 w-4" />
+              <span className="group-data-[collapsible=icon]:hidden">Sign Out</span>
             </Button>
+            
+            <SidebarSeparator className="bg-border/50" />
+            
+            <div className="px-2 py-2 group-data-[collapsible=icon]:hidden">
+               <div className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mb-1">Status</div>
+               <div className="flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+                  <span className="text-[11px] font-semibold text-foreground/80">Worker Online</span>
+               </div>
+            </div>
           </div>
         )}
-        <SidebarSeparator className="mb-2" />
-        <div className="text-xs text-muted-foreground p-2 text-center">
-          © 2024 CodeClarity
+        <div className="text-[10px] text-muted-foreground/60 text-center mt-4 group-data-[collapsible=icon]:hidden">
+          © 2026 CodeClarity Pro
         </div>
       </SidebarFooter>
     </>

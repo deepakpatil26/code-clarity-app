@@ -12,16 +12,16 @@ import { PropsWithChildren } from "react";
 import { Loader2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const AUTH_ROUTES = ["/login", "/signup"];
+const PUBLIC_ROUTES = ["/", "/login", "/signup"];
 
 export function AppLayout({ children }: PropsWithChildren) {
   const { user, loading } = useAuth();
   const pathname = usePathname();
 
-  const isAuthRoute = AUTH_ROUTES.includes(pathname);
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
-  if (isAuthRoute) {
-    return <>{children}</>;
+  if (isPublicRoute) {
+    return <main className="min-h-screen bg-background">{children}</main>;
   }
 
   if (loading) {

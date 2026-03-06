@@ -5,6 +5,7 @@ import {
   type FirebaseOptions,
 } from "firebase/app";
 import { getAuth, GithubAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -27,4 +28,7 @@ function getFirebaseApp() {
   return app;
 }
 
+const app = getFirebaseApp();
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 export { getFirebaseApp, firebaseConfig };
