@@ -9,4 +9,4 @@ export const ai = genkit({
   ],
 });
 
-export const geminiModel = gemini15Flash;
+export const geminiModel = "googleai/gemini-1.5-flash-latest";
