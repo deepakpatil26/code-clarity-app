@@ -17,14 +17,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  GitPullRequest,
-  Loader2,
-  ExternalLink,
-  GitMerge,
-  MessageSquare,
-  ArrowLeft,
-  Bot,
+import { 
+  GitPullRequest, 
+  Loader2, 
+  Play, 
+  ChevronRight, 
+  BarChart2, 
+  ArrowLeft, 
+  Bot, 
+  ExternalLink, 
+  GitMerge, 
+  MessageSquare 
 } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { listPullRequests } from "@/ai/flows/list-pull-requests-flow";
@@ -39,6 +42,7 @@ import { getPullRequestDiff } from "@/ai/flows/get-pull-request-diff-flow";
 import { suggestCodeImprovements } from "@/ai/flows/suggest-code-improvements";
 import type { SuggestCodeImprovementsOutput } from "@/ai/schemas/code-analysis";
 import { AnalysisDialog } from "@/components/analysis-dialog";
+import { useRepoConfig } from "@/hooks/use-repo-config";
 
 export default function PullRequestsPage() {
   const { user, loading: authLoading, getGitHubToken } = useAuth();
@@ -48,6 +52,10 @@ export default function PullRequestsPage() {
 
   const owner = params.owner as string;
   const repo = params.repo as string;
+  const repoFullName = `${owner}/${repo}`;
+
+  // Register this repo for Pro features
+  useRepoConfig(repoFullName);
 
   const [loading, setLoading] = useState(true);
   const [pullRequests, setPullRequests] = useState<PullRequest[]>([]);

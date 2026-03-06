@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="https://code-clarity-app.vercel.app/" target="_blank">
-    <img src="https://vercel.com/button" alt="Deploy with Vercel"/>
+    <img src="https://vercel.com/button" alt="Go Live"/>
   </a>
 </div>
 
@@ -44,6 +44,7 @@ This application is deployed on Vercel. You can access the live version here:
 ## 🎯 Key Features
 
 ### Smart Code Analysis
+
 - **Multi-language Support**: JavaScript, TypeScript, Python, Java, C++, and Go.
 - **Real-time Feedback**: Get actionable, line-by-line suggestions in the UI.
 - **Pull Request Integration**: Connect to your GitHub account to list repositories and analyze open pull requests.
@@ -51,6 +52,7 @@ This application is deployed on Vercel. You can access the live version here:
 - **Exportable Reports**: Download analysis results as a standalone HTML file.
 
 ### 🛠️ Built With
+
 - **Framework**: Next.js 14+ & React 18
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS & shadcn/ui
@@ -82,6 +84,7 @@ npm install
 # 5. Run the development server
 npm run dev
 ```
+
 The app will be available at `http://localhost:9002`.
 
 ## 🤝 Contributing

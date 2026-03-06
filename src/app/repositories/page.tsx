@@ -63,8 +63,7 @@ export default function RepositoriesPage() {
         toast({
           variant: "destructive",
           title: "Authentication Error",
-          description:
-            "Could not retrieve GitHub token. Please re-authenticate with GitHub.",
+          description: "Could not retrieve GitHub token. Please re-authenticate.",
         });
         setLoading(false);
         return;
@@ -73,12 +72,7 @@ export default function RepositoriesPage() {
       setRepositories(result.repositories);
     } catch (error) {
       console.error("Failed to fetch repositories:", error);
-      toast({
-        variant: "destructive",
-        title: "Failed to Fetch Repositories",
-        description:
-          "An error occurred while fetching your repositories. Please try again later.",
-      });
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -91,29 +85,33 @@ export default function RepositoriesPage() {
   }, [authLoading, user, isGitHubConnected, fetchRepositories]);
 
   const renderContent = () => {
-    if (authLoading) {
-      return null;
-    }
+    if (authLoading) return null;
 
     if (!user) {
-      return <p>Please sign in to view repositories.</p>;
+      return (
+        <div className="flex flex-col items-center justify-center py-20 bg-secondary/10 rounded-2xl border-2 border-dashed">
+           <p className="text-muted-foreground font-medium">Please sign in to view your repositories.</p>
+           <Button asChild className="mt-4 rounded-full">
+              <Link href="/login">Sign In</Link>
+           </Button>
+        </div>
+      );
     }
 
     if (!isGitHubConnected) {
       return (
         <>
-          <ReauthDialog
-            open={showReauthDialog}
-            onOpenChange={setShowReauthDialog}
-          />
-          <div className="flex flex-col items-center justify-center text-center py-16 px-4 border-2 border-dashed rounded-lg">
-            <Github className="h-16 w-16 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Connect to GitHub</h3>
-            <p className="text-muted-foreground mb-6 max-w-md">
-              To view your repositories, connect your GitHub account.
+          <ReauthDialog open={showReauthDialog} onOpenChange={setShowReauthDialog} />
+          <div className="flex flex-col items-center justify-center text-center py-20 px-6 glass rounded-2xl border-white/10 shadow-xl">
+            <div className="p-5 bg-primary/10 rounded-2xl mb-6">
+               <Github className="h-12 w-12 text-primary" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3 tracking-tight">Connect Your GitHub</h3>
+            <p className="text-muted-foreground mb-8 max-w-sm font-medium">
+              We need access to your repositories to perform automated PR analysis and security scans.
             </p>
-            <Button onClick={handleGitHubConnect} disabled={authLoading}>
-              <Github className="mr-2 h-4 w-4" /> Connect to GitHub
+            <Button onClick={handleGitHubConnect} size="lg" className="rounded-full px-8 h-12 shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90">
+              <Github className="mr-3 h-5 w-5" /> Connect via OAuth
             </Button>
           </div>
         </>
@@ -122,9 +120,9 @@ export default function RepositoriesPage() {
 
     if (loading) {
       return (
-        <div className="space-y-2">
-          {[...Array(5)].map((_, i) => (
-            <Skeleton key={i} className="h-16 w-full" />
+        <div className="space-y-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-16 w-full animate-pulse bg-secondary/50 rounded-xl"></div>
           ))}
         </div>
       );
@@ -132,73 +130,66 @@ export default function RepositoriesPage() {
 
     if (repositories.length === 0) {
       return (
-        <div className="text-center py-16">
-          <p className="text-muted-foreground">No public repositories found.</p>
+        <div className="text-center py-20 glass rounded-2xl border-white/10">
+          <Github className="h-12 w-12 mx-auto text-muted-foreground mb-4 opacity-20" />
+          <p className="text-muted-foreground font-semibold">No public repositories found in your workspace.</p>
         </div>
       );
     }
 
     return (
-      <div className="border rounded-lg">
+      <div className="overflow-hidden rounded-xl border border-border/40 bg-secondary/5">
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead className="hidden md:table-cell">Language</TableHead>
-              <TableHead className="hidden lg:table-cell text-center">
-                Stars
-              </TableHead>
-              <TableHead className="hidden lg:table-cell text-center">
-                Forks
-              </TableHead>
-              <TableHead></TableHead>
+          <TableHeader className="bg-secondary/30">
+            <TableRow className="hover:bg-transparent border-border/10">
+              <TableHead className="font-bold py-4">Repository Name</TableHead>
+              <TableHead className="hidden md:table-cell font-bold">Language</TableHead>
+              <TableHead className="hidden lg:table-cell text-center font-bold">Stats</TableHead>
+              <TableHead className="text-right font-bold pr-6">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {repositories.map((repo) => (
-              <TableRow key={repo.id}>
-                <TableCell className="font-medium">
-                  <div className="flex items-center gap-2">
-                    {repo.isPrivate ? (
-                      <ShieldCheck className="h-4 w-4 text-primary" />
-                    ) : (
-                      <GitPullRequest className="h-4 w-4 text-muted-foreground" />
-                    )}
+              <TableRow key={repo.id} className="group hover:bg-primary/5 transition-colors border-border/10">
+                <TableCell className="font-semibold py-5">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-lg ${repo.isPrivate ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {repo.isPrivate ? <ShieldCheck className="h-4 w-4" /> : <GitPullRequest className="h-4 w-4" />}
+                    </div>
                     <Link
                       href={`/repositories/${repo.owner}/${repo.name}`}
-                      className="hover:underline"
+                      className="hover:text-primary transition-colors leading-none"
                     >
                       {repo.fullName}
                     </Link>
                   </div>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  {repo.language && (
-                    <Badge variant="secondary">{repo.language}</Badge>
-                  )}
+                  {repo.language ? (
+                    <Badge variant="outline" className="font-semibold border-primary/20 text-primary bg-primary/5">{repo.language}</Badge>
+                  ) : <span className="text-muted-foreground text-xs italic">Not specified</span>}
                 </TableCell>
-                <TableCell className="hidden lg:table-cell text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    <Star className="h-4 w-4 text-yellow-500" />
-                    <span>{repo.stars}</span>
+                <TableCell className="hidden lg:table-cell">
+                   <div className="flex items-center justify-center gap-4 text-xs font-semibold">
+                      <div className="flex items-center gap-1.5 text-yellow-500">
+                         <Star className="h-3.5 w-3.5 fill-current" />
+                         <span>{repo.stars}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                         <GitFork className="h-3.5 w-3.5" />
+                         <span>{repo.forks}</span>
+                      </div>
+                   </div>
+                </TableCell>
+                <TableCell className="text-right pr-6">
+                  <div className="flex items-center justify-end gap-2">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" asChild>
+                       <Link href={repo.url} target="_blank"><ExternalLink className="h-4 w-4" /></Link>
+                    </Button>
+                    <Button variant="outline" size="sm" className="rounded-full px-4 h-8 font-bold border-primary/30 hover:bg-primary hover:text-white transition-all transform group-hover:scale-105" asChild>
+                      <Link href={`/repositories/${repo.owner}/${repo.name}`}>Configure</Link>
+                    </Button>
                   </div>
-                </TableCell>
-                <TableCell className="hidden lg:table-cell text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    <GitFork className="h-4 w-4 text-muted-foreground" />
-                    <span>{repo.forks}</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button variant="outline" size="sm" asChild>
-                    <Link
-                      href={repo.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink className="mr-2 h-4 w-4" /> View on GitHub
-                    </Link>
-                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -209,15 +200,14 @@ export default function RepositoriesPage() {
   };
 
   return (
-    <div className="flex-1 p-4 lg:p-6 xl:p-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <GitPullRequest className="h-6 w-6" />
-            Repositories
-          </CardTitle>
-        </CardHeader>
-        <CardContent>{renderContent()}</CardContent>
+    <div className="container mx-auto py-8 px-4 md:px-8 max-w-7xl animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <div className="mb-8 space-y-1">
+         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Your Repositories</h1>
+         <p className="text-muted-foreground font-medium">Select a repository to enable AI code reviews and security tracking.</p>
+      </div>
+      
+      <Card className="glass border-border/40 shadow-2xl overflow-hidden rounded-2xl">
+        <CardContent className="p-4 sm:p-6 lg:p-8">{renderContent()}</CardContent>
       </Card>
     </div>
   );

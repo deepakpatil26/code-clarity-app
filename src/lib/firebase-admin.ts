@@ -8,10 +8,9 @@ export const initializeFirebaseAdmin = () => {
     );
 
     if (!serviceAccount.project_id) {
-      console.warn(
-        "Warning: FIREBASE_SERVICE_ACCOUNT_KEY is not set. Authentication may not work properly."
+      throw new Error(
+        "FIREBASE_SERVICE_ACCOUNT_KEY is missing or invalid in .env.local. Please generate a new private key from Firebase Console -> Project Settings -> Service accounts, and add it to your .env.local file."
       );
-      return;
     }
 
     try {
@@ -26,5 +25,15 @@ export const initializeFirebaseAdmin = () => {
   }
 };
 
+initializeFirebaseAdmin();
+
 // Initialize Firestore
 export const db = getFirestore();
+
+// Helper to get collections with types
+export const collections = {
+  prReviews: () => db.collection("pr_reviews"),
+  reviewFindings: () => db.collection("review_findings"),
+  repositoryConfigs: () => db.collection("repository_configs"),
+  webhookEvents: () => db.collection("webhook_events"),
+};
