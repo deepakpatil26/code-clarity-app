@@ -1,6 +1,6 @@
 "use server";
 
-import { db, initializeFirebaseAdmin } from "@/lib/firebase-admin";
+import { collections, initializeFirebaseAdmin } from "@/lib/firebase-admin";
 import { Timestamp } from "firebase-admin/firestore";
 
 // Ensure Firebase Admin is initialized
@@ -30,7 +30,7 @@ export async function saveAnalysis(
   }
 
   try {
-    const docRef = await db.collection("analyses").add({
+    const docRef = await collections.analyses().add({
       userId,
       fileName: data.fileName,
       language: data.language,
@@ -52,8 +52,7 @@ export async function getHistory(userId: string): Promise<AnalysisRecord[]> {
   }
 
   try {
-    const snapshot = await db
-      .collection("analyses")
+    const snapshot = await collections.analyses()
       .where("userId", "==", userId)
       .orderBy("timestamp", "desc")
       .limit(20)

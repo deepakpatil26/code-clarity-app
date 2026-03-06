@@ -44,4 +44,5 @@ export const collections = {
   reviewFindings: () => getDb().collection("review_findings"),
   repositoryConfigs: () => getDb().collection("repository_configs"),
   webhookEvents: () => getDb().collection("webhook_events"),
+  analyses: () => getDb().collection("analyses"),
 };
