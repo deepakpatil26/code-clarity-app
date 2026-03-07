@@ -148,8 +148,8 @@ export default function LandingPage() {
              <div className="relative rounded-2xl border bg-card p-1 shadow-2xl overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-accent/10 pointer-events-none"></div>
                 <Image 
-                   src="/CodeClarity.gif" 
-                   alt="CodeClarity Interface" 
+                   src="/hero-mockup.png" 
+                   alt="CodeClarity Pro Interface" 
                    width={1200} 
                    height={800} 
                    className="rounded-xl shadow-inner"
