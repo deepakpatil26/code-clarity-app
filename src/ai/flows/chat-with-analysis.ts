@@ -1,6 +1,6 @@
 "use server";
 
-import { ai, aiModel } from "../genkit";
+import { ai, geminiModel } from "../genkit";
 import { ChatWithAnalysisInput, ChatWithAnalysisOutput, ChatWithAnalysisInputSchema, ChatWithAnalysisOutputSchema } from "../schemas/chat-analysis";
 
 /**
@@ -21,7 +21,7 @@ const chatWithAnalysisFlow = ai.defineFlow(
     
     // @ts-ignore - Genkit 0.5+ overload resolution
     const response = await ai.generate({
-      model: aiModel,
+      model: geminiModel,
       system: `You are an expert software engineer explaining a code review finding.
       
 Code Context:
