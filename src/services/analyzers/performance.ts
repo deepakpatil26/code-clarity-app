@@ -2,6 +2,7 @@ export interface PerformanceFinding {
   type: string;
   severity: "low" | "medium" | "high";
   line: number;
+  filePath?: string;
   message: string;
   suggestion: string;
 }

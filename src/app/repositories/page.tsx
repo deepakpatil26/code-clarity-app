@@ -41,6 +41,7 @@ export default function RepositoriesPage() {
   const [loading, setLoading] = useState(false);
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [showReauthDialog, setShowReauthDialog] = useState(false);
+  const [needsReauth, setNeedsReauth] = useState(false);
 
   const isGitHubConnected = user?.providerData.some(
     (provider) => provider.providerId === "github.com"
@@ -48,6 +49,10 @@ export default function RepositoriesPage() {
 
   const handleGitHubConnect = async () => {
     const success = await signInWithGitHub();
+    if (success) {
+      setNeedsReauth(false);
+      fetchRepositories();
+    }
     if (!success && pendingCredentialForLinking.current) {
       setShowReauthDialog(true);
     }
@@ -62,10 +67,11 @@ export default function RepositoriesPage() {
       if (!token) {
         toast({
           variant: "destructive",
-          title: "Authentication Error",
+          title: "Session Expired",
           description: "Could not retrieve GitHub token. Please re-authenticate.",
         });
         setLoading(false);
+        setNeedsReauth(true);
         return;
       }
       const result = await listRepositories({ authToken: token });
@@ -98,7 +104,7 @@ export default function RepositoriesPage() {
       );
     }
 
-    if (!isGitHubConnected) {
+    if (!isGitHubConnected || needsReauth) {
       return (
         <>
           <ReauthDialog open={showReauthDialog} onOpenChange={setShowReauthDialog} />
@@ -138,8 +144,8 @@ export default function RepositoriesPage() {
     }
 
     return (
-      <div className="overflow-hidden rounded-xl border border-border/40 bg-secondary/5">
-        <Table>
+      <div className="overflow-x-auto rounded-xl border border-border/40 bg-secondary/5">
+        <Table className="min-w-[720px]">
           <TableHeader className="bg-secondary/30">
             <TableRow className="hover:bg-transparent border-border/10">
               <TableHead className="font-bold py-4">Repository Name</TableHead>

@@ -10,7 +10,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "worker": "tsx --watch src/services/workers/analysis.worker.ts"
+    "worker": "tsx --watch src/services/workers/analysis.worker.ts",
+    "backend:dev": "cd backend && npm run dev",
+    "backend:start": "cd backend && npm run start"
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.14.1",
@@ -41,11 +43,14 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "dotenv": "^17.3.1",
     "embla-carousel-react": "^8.6.0",
     "firebase": "^11.9.1",
     "firebase-admin": "^13.6.0",
     "framer-motion": "^12.35.0",
     "genkit": "^1.14.1",
+    "genkitx-openai": "^0.30.0",
+    "html2pdf.js": "^0.10.3",
     "ioredis": "^5.10.0",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.475.0",

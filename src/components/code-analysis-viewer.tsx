@@ -24,6 +24,7 @@ import { generateReport } from "@/ai/flows/generate-report-flow";
 import { textToSpeech } from "@/ai/flows/text-to-speech-flow";
 import type { AnalysisRecord } from "@/app/actions/history";
 import { useEffect, useRef } from "react";
+import { downloadHtmlAsPdf } from "@/lib/reports";
 
 type Suggestion = {
   lineNumber: number;
@@ -42,6 +43,7 @@ type FileAnalysis = {
   loading: boolean;
   error?: string;
   isExporting?: boolean;
+  isExportingPdf?: boolean;
   isGeneratingAudio?: boolean;
   audioSrc?: string | null;
 };
@@ -311,6 +313,45 @@ export function CodeAnalysisViewer() {
     }
   };
 
+  const handleExportPdf = async (file: FileAnalysis) => {
+    if (!file.suggestions || file.suggestions.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Export Failed",
+        description: "No analysis results to export.",
+      });
+      return;
+    }
+    updateFileState(file.path, { isExportingPdf: true });
+    try {
+      const suggestionsAsStrings = file.suggestions.map(
+        (s) => s.originalSuggestion
+      );
+
+      const { html } = await generateReport({
+        code: file.content,
+        language: file.language,
+        suggestions: suggestionsAsStrings,
+      });
+
+      await downloadHtmlAsPdf(html, `${file.path}-analysis-report.pdf`);
+
+      toast({
+        title: "Export Successful",
+        description: "Your report has been downloaded as a PDF file.",
+      });
+    } catch (e) {
+      console.error(e);
+      toast({
+        variant: "destructive",
+        title: "Export Failed",
+        description: "An error occurred while generating the PDF report.",
+      });
+    } finally {
+      updateFileState(file.path, { isExportingPdf: false });
+    }
+  };
+
   const handleListen = async (file: FileAnalysis) => {
     if (!file.suggestions || file.suggestions.length === 0) {
       toast({
@@ -409,12 +450,12 @@ export function CodeAnalysisViewer() {
   };
 
   return (
-    <div className="flex h-full gap-4">
+    <div className="flex h-full gap-4 flex-col md:flex-row">
       {/* History Sidebar */}
       {user && (
         <div
-          className={`${showHistory ? "w-64" : "w-0 md:w-12"
-            } transition-all duration-300 border-r flex flex-col bg-background overflow-hidden relative`}
+          className={`${showHistory ? "w-full md:w-64" : "w-0 md:w-12"
+            } transition-all duration-300 border-r md:border-r flex flex-col bg-background overflow-hidden relative`}
         >
           <Button
             variant="ghost"
@@ -506,11 +547,11 @@ export function CodeAnalysisViewer() {
               >
                 <Card className="flex-1 flex flex-col overflow-hidden">
                   <CardHeader className="border-b p-3">
-                    <div className="flex justify-between items-center">
-                      <CardTitle className="text-sm font-medium">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                      <CardTitle className="text-sm font-medium break-all">
                         {file.path}
                       </CardTitle>
-                      <div className="flex gap-2 items-center">
+                      <div className="flex flex-wrap gap-2 items-center">
                         <div className="flex items-center space-x-2 mr-2">
                           <Switch
                             id="auto-analyze"
@@ -543,6 +584,7 @@ export function CodeAnalysisViewer() {
                           disabled={
                             file.loading ||
                             file.isExporting ||
+                            file.isExportingPdf ||
                             file.suggestions.length === 0
                           }
                         >
@@ -552,6 +594,24 @@ export function CodeAnalysisViewer() {
                             <Download className="h-4 w-4 mr-2" />
                           )}
                           Export
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleExportPdf(file)}
+                          disabled={
+                            file.loading ||
+                            file.isExporting ||
+                            file.isExportingPdf ||
+                            file.suggestions.length === 0
+                          }
+                        >
+                          {file.isExportingPdf ? (
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          ) : (
+                            <Download className="h-4 w-4 mr-2" />
+                          )}
+                          PDF
                         </Button>
                         <Button
                           variant="outline"
@@ -578,10 +638,10 @@ export function CodeAnalysisViewer() {
                     )}
                   </CardHeader>
                   <div className="flex-1 flex overflow-hidden">
-                    <ScrollArea className="h-[calc(100vh-250px)] w-full">
+                    <ScrollArea className="h-[calc(100vh-260px)] md:h-[calc(100vh-250px)] w-full">
                       <div className="p-4">
                         <textarea
-                          className="w-full h-full min-h-[500px] font-mono text-sm bg-transparent border-none resize-none focus:outline-none"
+                          className="w-full h-full min-h-[360px] md:min-h-[500px] font-mono text-sm bg-transparent border-none resize-none focus:outline-none"
                           value={file.content}
                           onChange={(e) =>
                             handleCodeChange(file.path, e.target.value)

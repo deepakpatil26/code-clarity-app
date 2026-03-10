@@ -39,6 +39,7 @@ export class PRCommenter {
         comments: topComments.map(c => ({
           path: c.path,
           line: c.line,
+          side: "RIGHT",
           body: c.body,
         })),
       });
@@ -97,29 +98,38 @@ _⚙️ Powered by [CodeClarity Pro](https://code-clarity-app.vercel.app)_
   }
 
   private generateInlineComments(findings: AllFindings): { path: string, line: number, body: string }[] {
-    const comments: { path: string, line: number, body: string }[] = [];
+    const comments: { path: string, line: number, body: string, weight: number }[] = [];
 
-    // Note: In a real diff analysis, we'd need to map the absolute line to the diff line.
-    // For now, we'll use the absolute line (which works if the file is small or if Octokit handles it).
-    // TODO: Improve line mapping for diffs.
+    const severityWeight: Record<string, number> = {
+      critical: 5,
+      high: 4,
+      medium: 2,
+      low: 1,
+    };
 
     findings.security.forEach(f => {
+      if (!f.filePath || !f.line || f.line <= 0) return;
       comments.push({
-        path: "", // This needs to be set from the file being analyzed
+        path: f.filePath,
         line: f.line,
+        weight: severityWeight[f.severity] ?? 1,
         body: `🔴 **Security Risk: ${f.type}**\n\n${f.message}\n\n💡 **Suggestion**: ${f.suggestion}`,
       });
     });
 
     findings.performance.forEach(f => {
+      if (!f.filePath || !f.line || f.line <= 0) return;
       comments.push({
-        path: "",
+        path: f.filePath,
         line: f.line,
+        weight: severityWeight[f.severity] ?? 1,
         body: `⚡ **Performance Concern: ${f.type}**\n\n${f.message}\n\n💡 **Suggestion**: ${f.suggestion}`,
       });
     });
 
-    return comments;
+    return comments
+      .sort((a, b) => b.weight - a.weight)
+      .map(({ path, line, body }) => ({ path, line, body }));
   }
 }
 

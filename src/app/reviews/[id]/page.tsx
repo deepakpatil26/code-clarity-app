@@ -90,7 +90,7 @@ export default function ReviewDetailPage() {
              <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 font-bold uppercase tracking-wider text-[10px]">Automated Analysis</Badge>
              <span className="text-muted-foreground text-xs font-mono">{new Date(review.completedAt).toLocaleDateString()}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight">{review.repoFullName}</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight break-words">{review.repoFullName}</h1>
           <p className="text-muted-foreground font-medium flex items-center gap-2">
              <span className="bg-secondary px-2 py-0.5 rounded text-foreground">PR #{review.prNumber}</span>
              <span className="truncate max-w-[200px] md:max-w-none opacity-80">{review.prTitle}</span>
@@ -107,7 +107,7 @@ export default function ReviewDetailPage() {
           <CardContent className="flex flex-col items-center pt-4 pb-10 px-8">
             <div className={`relative flex items-center justify-center mb-8`}>
                <div className={`absolute inset-0 blur-3xl rounded-full opacity-20 ${review.score >= 8 ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-               <div className={`relative text-8xl font-black drop-shadow-lg ${getScoreColor(review.score)}`}>
+               <div className={`relative text-6xl md:text-8xl font-black drop-shadow-lg ${getScoreColor(review.score)}`}>
                  {review.score.toFixed(1)}
                </div>
             </div>
@@ -131,7 +131,7 @@ export default function ReviewDetailPage() {
 
         {/* Summary Stats */}
         <Card className="lg:col-span-2 glass border-border/40 shadow-2xl overflow-hidden rounded-3xl">
-          <CardHeader className="border-b border-border/10 bg-secondary/20 py-6 px-8 flex flex-row justify-between items-center">
+        <CardHeader className="border-b border-border/10 bg-secondary/20 py-6 px-8 flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
              <div>
                 <CardTitle className="text-xl font-bold">Analysis Breakdown</CardTitle>
                 <CardDescription className="font-medium">Quantified metrics by category</CardDescription>

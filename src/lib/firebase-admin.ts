@@ -18,7 +18,12 @@ export const initializeFirebaseAdmin = () => {
   }
 
   try {
-    const serviceAccount = JSON.parse(serviceAccountKey);
+    const raw = serviceAccountKey.trim();
+    const unwrapped =
+      (raw.startsWith("'") && raw.endsWith("'")) || (raw.startsWith("\"") && raw.endsWith("\""))
+        ? raw.slice(1, -1)
+        : raw;
+    const serviceAccount = JSON.parse(unwrapped);
     adminApp = initializeApp({
       credential: cert(serviceAccount as any),
       databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`,

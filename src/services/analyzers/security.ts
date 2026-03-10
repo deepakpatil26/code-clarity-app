@@ -5,6 +5,7 @@ export const SecurityFindingSchema = z.object({
   type: z.string(),
   severity: z.enum(["low", "medium", "high", "critical"]),
   line: z.number(),
+  filePath: z.string().optional(),
   message: z.string(),
   suggestion: z.string(),
 });

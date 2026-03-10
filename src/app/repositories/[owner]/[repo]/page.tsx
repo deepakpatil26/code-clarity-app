@@ -59,11 +59,13 @@ export default function PullRequestsPage() {
 
   const [loading, setLoading] = useState(true);
   const [pullRequests, setPullRequests] = useState<PullRequest[]>([]);
+  const [currentDiff, setCurrentDiff] = useState("");
   const [analyzingPr, setAnalyzingPr] = useState<number | null>(null);
   const [analysisResult, setAnalysisResult] =
     useState<SuggestCodeImprovementsOutput | null>(null);
   const [isAnalysisDialogOpen, setIsAnalysisDialogOpen] = useState(false);
   const [selectedPrTitle, setSelectedPrTitle] = useState("");
+  const [needsReauth, setNeedsReauth] = useState(false);
 
   const fetchPullRequests = useCallback(async () => {
     if (!user) return;
@@ -73,10 +75,11 @@ export default function PullRequestsPage() {
       if (!token) {
         toast({
           variant: "destructive",
-          title: "Authentication Error",
+          title: "Session Expired",
           description: "Could not retrieve GitHub token.",
         });
         setLoading(false);
+        setNeedsReauth(true);
         return;
       }
       const result = await listPullRequests({ authToken: token, owner, repo });
@@ -103,14 +106,16 @@ export default function PullRequestsPage() {
   const handleAnalyze = async (pr: PullRequest) => {
     setAnalyzingPr(pr.id);
     setAnalysisResult(null);
+    setCurrentDiff("");
     try {
       const token = await getGitHubToken();
       if (!token) {
         toast({
           variant: "destructive",
-          title: "Authentication Error",
+          title: "Session Expired",
           description: "Could not retrieve GitHub token.",
         });
+        setNeedsReauth(true);
         return;
       }
 
@@ -128,6 +133,7 @@ export default function PullRequestsPage() {
         language: "diff",
       });
 
+      setCurrentDiff(diffResult.diff);
       setAnalysisResult(analysisResult);
       setSelectedPrTitle(pr.title);
       setIsAnalysisDialogOpen(true);
@@ -154,6 +160,21 @@ export default function PullRequestsPage() {
       );
     }
 
+    if (needsReauth) {
+      return (
+        <div className="flex flex-col items-center justify-center text-center py-16 bg-red-500/5 rounded-2xl border border-red-500/10">
+          <Bot className="h-10 w-10 text-red-500/50 mb-3" />
+          <h3 className="text-xl font-bold mb-2 text-foreground">GitHub Session Expired</h3>
+          <p className="text-muted-foreground mb-6 max-w-sm">
+            We lost access to your GitHub token. Please return to the dashboard to reconnect and resume analysis.
+          </p>
+          <Button asChild className="rounded-full px-6 bg-primary hover:bg-primary/90">
+             <Link href="/repositories">Return to Dashboard</Link>
+          </Button>
+        </div>
+      );
+    }
+
     if (pullRequests.length === 0) {
       return (
         <div className="text-center py-16">
@@ -163,8 +184,8 @@ export default function PullRequestsPage() {
     }
 
     return (
-      <div className="border rounded-lg">
-        <Table>
+      <div className="border rounded-lg overflow-x-auto">
+        <Table className="min-w-[640px]">
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
@@ -252,6 +273,7 @@ export default function PullRequestsPage() {
         onOpenChange={setIsAnalysisDialogOpen}
         result={analysisResult}
         title={selectedPrTitle}
+        code={currentDiff}
       />
       <div className="flex-1 p-4 lg:p-6 xl:p-8">
         <Card>
@@ -264,7 +286,7 @@ export default function PullRequestsPage() {
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <div>
+              <div className="flex-1">
                 <CardTitle className="flex items-center gap-2">
                   <GitPullRequest className="h-6 w-6" />
                   Pull Requests
@@ -274,6 +296,9 @@ export default function PullRequestsPage() {
                   <span className="font-semibold text-primary">{`${owner}/${repo}`}</span>
                 </CardDescription>
               </div>
+              <Button asChild variant="outline">
+                <Link href={`/dashboard/${owner}/${repo}`}>View Analytics</Link>
+              </Button>
             </div>
           </CardHeader>
           <CardContent>{renderContent()}</CardContent>

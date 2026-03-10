@@ -39,15 +39,19 @@ CodeClarity Pro isn't just a linter — it's a deep-thinking AI collaborator. It
 ## 🎯 Key Features
 
 ### 1. Automated Pull Request Analysis
+
 Connect your GitHub App to **automatically** receive AI comments and quality checks on every PR. It calculates a "Quality Score" and sets commit statuses directly on GitHub.
 
 ### 2. Manual Code Analyzer
+
 Upload any file or paste code snippets for instant, one-off analysis. Perfect for quick logic checks or refactoring advice.
 
 ### 3. Smart History & Dashboard
+
 Your personal history of code analyses, stored securely via Firebase. Track your improvement over time and revisit previous suggestions.
 
 ### 4. Premium UI/UX
+
 A stunning, responsive interface built with **Vite**, **Tailwind CSS**, and **Framer Motion**. Features dark mode, glassmorphism, and smooth micro-animations.
 
 ---
@@ -67,6 +71,7 @@ A stunning, responsive interface built with **Vite**, **Tailwind CSS**, and **Fr
 ## 🏁 Getting Started
 
 ### 1. Clone & Install
+
 ```bash
 git clone https://github.com/deepakpatil26/code-clarity-app.git
 cd code-clarity-app
@@ -74,7 +79,9 @@ npm install
 ```
 
 ### 2. Environment Setup
+
 Create a `.env.local` file with:
+
 ```env
 # AI
 GEMINI_API_KEY=your_key
@@ -92,14 +99,27 @@ GITHUB_WEBHOOK_SECRET=...
 # Backend
 REDIS_URL=...
 FIREBASE_SERVICE_ACCOUNT_KEY=...
+BACKEND_PORT=9100
 ```
 
 ### 3. Run Development
+
 ```bash
 npm run dev
+
+# In a separate terminal (webhook backend)
+npm run backend:dev
 ```
 
 The app will be available at `http://localhost:3000`.
+
+### 4. GitHub Webhook URL
+
+Point your GitHub App webhook URL to the backend service:
+
+```
+http://localhost:9100/webhooks/github
+```
 
 ---
 
