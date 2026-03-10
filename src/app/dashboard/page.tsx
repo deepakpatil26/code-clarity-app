@@ -86,7 +86,7 @@ export default function DashboardPage() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="glass border-border/40 p-1 rounded-xl">
+        <TabsList className="glass border-border/40 p-1 rounded-xl overflow-x-auto no-scrollbar">
           <TabsTrigger value="overview" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white">
             <LayoutDashboard className="h-4 w-4" />
             <span className="hidden sm:inline">Overview</span>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
               <CardContent className="flex flex-col items-center pt-4 flex-1">
                  <div className="relative flex items-center justify-center mb-6">
                     <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full"></div>
-                    <div className="relative text-7xl font-black text-primary drop-shadow-sm">
+                    <div className="relative text-6xl md:text-7xl font-black text-primary drop-shadow-sm">
                       {recentReviews.length > 0 
                         ? (recentReviews.reduce((acc, r) => acc + r.score, 0) / recentReviews.length).toFixed(1)
                         : "--"}
