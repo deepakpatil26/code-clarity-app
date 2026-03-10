@@ -17,7 +17,7 @@ import {
   signOut as firebaseSignOut,
   GithubAuthProvider,
   setPersistence,
-  browserSessionPersistence,
+  browserLocalPersistence,
   Auth,
   getAuth,
   signInWithPopup,
@@ -134,11 +134,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
     provider.addScope("user:email");
 
     try {
-      await setPersistence(auth, browserSessionPersistence);
+      await setPersistence(auth, browserLocalPersistence);
       const result = await signInWithPopup(auth, provider);
       const credential = GithubAuthProvider.credentialFromResult(result);
       if (credential?.accessToken) {
-        sessionStorage.setItem("github-token", credential.accessToken);
+        localStorage.setItem("github-token", credential.accessToken);
       }
       toast({
         title: "Success",
@@ -218,13 +218,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
         operationType: "link",
       });
       if (tokenCredential?.accessToken) {
-        sessionStorage.setItem("github-token", tokenCredential.accessToken);
+        localStorage.setItem("github-token", tokenCredential.accessToken);
       } else {
         const ghProvider = new GithubAuthProvider();
         const result = await signInWithPopup(auth, ghProvider);
         const freshCredential = GithubAuthProvider.credentialFromResult(result);
         if (freshCredential?.accessToken) {
-          sessionStorage.setItem("github-token", freshCredential.accessToken);
+          localStorage.setItem("github-token", freshCredential.accessToken);
         }
       }
 
@@ -250,14 +250,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
   };
 
   const getGitHubToken = useCallback(async (): Promise<string | null> => {
-    return sessionStorage.getItem("github-token");
+    return localStorage.getItem("github-token");
   }, []);
 
   const signOut = async () => {
     const auth = getAuthInstance();
     try {
       await firebaseSignOut(auth);
-      sessionStorage.removeItem("github-token");
+      localStorage.removeItem("github-token");
       router.push("/login");
       toast({
         title: "Signed Out",

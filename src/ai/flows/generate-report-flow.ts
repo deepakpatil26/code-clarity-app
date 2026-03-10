@@ -5,7 +5,7 @@
  * - generateReport - A function that creates an HTML report.
  */
 
-import { ai } from "@/ai/genkit";
+import { ai, aiModel } from "@/ai/genkit";
 import {
   GenerateReportInput,
   GenerateReportInputSchema,
@@ -23,7 +23,7 @@ const prompt = ai.definePrompt({
   name: "generateReportPrompt",
   input: { schema: GenerateReportInputSchema },
   output: { schema: GenerateReportOutputSchema },
-  model: "googleai/gemini-1.5-flash",
+  model: aiModel,
   prompt: `You are a report generator for a code analysis tool called CodeClarity. Your task is to generate a clean, modern, and professional HTML report based on the provided code and analysis suggestions.
 
 Use Tailwind CSS classes for styling, but embed them in a <style> tag in the HTML head, as the report will be a standalone file. Do not use external stylesheets.

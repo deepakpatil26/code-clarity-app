@@ -6,7 +6,7 @@
  * - suggestCodeImprovements - A function that analyzes code and suggests line-by-line improvements.
  */
 
-import { ai, geminiModel } from "@/ai/genkit";
+import { ai, aiModel } from "@/ai/genkit";
 import {
   SuggestCodeImprovementsInput,
   SuggestCodeImprovementsInputSchema,
@@ -24,19 +24,25 @@ const prompt = ai.definePrompt({
   name: "suggestCodeImprovementsPrompt",
   input: { schema: SuggestCodeImprovementsInputSchema },
   output: { schema: SuggestCodeImprovementsOutputSchema },
-  model: geminiModel,
-  prompt: `You are an AI code reviewer. Your task is to analyze the following code and provide line-by-line suggestions for code quality, security vulnerabilities, and performance optimization.
+  model: aiModel,
+  prompt: `You are an AI code reviewer. Your task is to analyze the following code and provide detailed, structured suggestions for code quality, security vulnerabilities, and performance optimization.
+  
+  In addition to line-by-line suggestions, you MUST provide a quantitative summary of the code's health.
 
-**Instructions:**
-- For each suggestion, you MUST provide the line number it applies to.
-- For each suggestion, you MUST classify it as 'quality', 'security', or 'performance'.
-- For each suggestion, you MUST assign a severity of 'low', 'medium', or 'high'.
-- Format EACH suggestion as a single string: "[line <number>] [<type>/<severity>] <your suggestion message>"
+**Instructions for Suggestions:**
+- For each suggestion, you MUST return an object in the 'suggestions' array.
+- Each suggestion object must contain:
+  - **line**: The line number the suggestion applies to.
+  - **type**: 'quality', 'security', or 'performance'.
+  - **severity**: 'low', 'medium', or 'high'.
+  - **message**: A clear, concise explanation of the issue and how to fix it.
+  - **suggestedFix**: A short code snippet showing exactly how the fixed code should look. (Optional but highly recommended for high/medium severity).
 
-**Example Suggestions:**
-- "[line 5] [quality/low] Consider using 'const' instead of 'let' as the variable is not reassigned."
-- "[line 12] [security/high] This query is vulnerable to SQL injection. Use parameterized queries instead."
-- "[line 25] [performance/medium] This loop can be optimized by caching the array length."
+**Instructions for Summary Metrics:**
+- **securityScore**: 0 to 10.
+- **qualityScore**: 0 to 10.
+- **performanceScore**: 0 to 10.
+- **overallGrade**: 'A+' to 'F'.
 
 Language: {{{language}}}
 
@@ -45,10 +51,10 @@ Code:
 {{{code}}}
 \`\`\`
 
-Provide your suggestions in an array of strings, following the format precisely. If there are no suggestions, return an empty array.
+Return the results in the specified JSON structure.
 `,
   config: {
-    maxOutputTokens: 1024,
+    maxOutputTokens: 3000,
     temperature: 0.1,
   },
 });
@@ -61,19 +67,53 @@ const suggestCodeImprovementsFlow = ai.defineFlow(
   },
   async (input) => {
     try {
-      const { output } = await prompt(input);
-      if (!output) {
-        return { suggestions: [] };
+      // Truncate large diffs to stay within Groq's context window (~128K tokens).
+      // 15,000 chars ≈ 4,000 tokens, leaving room for the prompt template + output.
+      const MAX_CODE_CHARS = 15000;
+      let code = input.code;
+      let truncated = false;
+      if (code.length > MAX_CODE_CHARS) {
+        code = code.substring(0, MAX_CODE_CHARS);
+        truncated = true;
       }
-      return output;
+
+      const { output } = await prompt({ ...input, code });
+      if (!output) {
+        return { 
+          suggestions: [],
+          summary: { securityScore: 10, qualityScore: 10, performanceScore: 10, overallGrade: "A+" }
+        };
+      }
+      
+      // If we truncated, add a note to the suggestions
+      if (truncated) {
+        output.suggestions.push({
+          message: "Note: The diff was too large for a single pass. Only the first ~15,000 characters were analyzed. Consider reviewing the remaining changes manually.",
+          type: "quality" as const,
+          severity: "low" as const,
+          line: 0,
+        });
+      }
+
+      return output as SuggestCodeImprovementsOutput;
     } catch (error) {
       console.error("AI Analysis Error:", error);
-      // Return a friendly error as a suggestion so the user knows what happened
       return { 
         suggestions: [
-          `[line 1] [security/high] AI Analysis Error: ${error instanceof Error ? error.message : String(error)}. Please check your API key and model availability.`
-        ] 
-      };
+          {
+            message: `AI Analysis Error: ${error instanceof Error ? error.message : String(error)}. Please check your API key and model availability.`,
+            type: "security" as const,
+            severity: "high" as const,
+            line: 1
+          }
+        ],
+        summary: {
+          securityScore: 0,
+          qualityScore: 0,
+          performanceScore: 0,
+          overallGrade: "F"
+        }
+      } as SuggestCodeImprovementsOutput;
     }
   }
 );

@@ -35,47 +35,49 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030014]">
+    <div className="dark relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030014]">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/20 rounded-full blur-[120px] animate-pulse delay-700"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/20 rounded-full blur-[120px] animate-pulse delay-700"></div>
         <div className="absolute inset-0 noise opacity-20"></div>
       </div>
-
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-md px-4"
-      >
-        <Card className="glass border-white/10 shadow-2xl backdrop-blur-xl bg-black/40 text-white">
-          <CardHeader className="space-y-1 text-center">
-            <div className="flex justify-center mb-6">
-              <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
-                 <Image
-                   src="/logo.png"
-                   alt="CodeClarity Logo"
-                   width={48}
-                   height={48}
-                   className="rounded-xl"
-                 />
-              </div>
-            </div>
-            <CardTitle className="text-3xl font-bold tracking-tight text-white">Create Account</CardTitle>
-            <CardDescription className="text-gray-400">
+ 
+       <motion.div 
+         initial={{ opacity: 0, y: 20 }}
+         animate={{ opacity: 1, y: 0 }}
+         transition={{ duration: 0.5 }}
+         className="relative z-10 w-full max-w-md px-4"
+       >
+        <Card className="glass border-white/10 shadow-2xl backdrop-blur-2xl bg-black/60 text-white overflow-hidden">
+          <CardHeader className="space-y-1 text-center pb-8 border-b border-white/5 mb-6">
+             <div className="flex justify-center mb-6">
+               <div className="p-4 bg-primary/10 rounded-3xl border border-primary/20 shadow-lg shadow-primary/10">
+                  <Image
+                    src="/logo.png"
+                    alt="CodeClarity Logo"
+                    width={56}
+                    height={56}
+                    className="rounded-xl"
+                  />
+               </div>
+             </div>
+            <CardTitle className="text-4xl font-black tracking-tight text-white mb-2">
+              <span className="text-gradient">Create Account</span>
+            </CardTitle>
+            <CardDescription className="text-white/50 font-medium">
               Join CodeClarity Pro today
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSignUp}>
-            <CardContent className="grid gap-4">
+            <CardContent className="grid gap-5">
               <div className="grid gap-2">
-                <Label htmlFor="email" className="text-gray-300">Email</Label>
+                <Label htmlFor="email" className="text-white/70 text-xs font-bold uppercase tracking-wider">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="name@example.com"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:ring-primary"
+                  className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:ring-primary focus:border-primary rounded-xl"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -83,31 +85,36 @@ export default function SignupPage() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password" id="password-label" className="text-gray-300">Password</Label>
+                <Label htmlFor="password" id="password-label" className="text-white/70 text-xs font-bold uppercase tracking-wider">Password</Label>
                 <Input
                   id="password"
                   type="password"
                   placeholder="••••••••"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:ring-primary"
+                  className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:ring-primary focus:border-primary rounded-xl"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
                   minLength={6}
                 />
-                <p className="text-[10px] text-gray-500">
-                  Password must be at least 6 characters.
+                <p className="text-[10px] text-white/30 font-medium uppercase tracking-tighter">
+                  Minimum 6 characters for enterprise-grade security.
                 </p>
               </div>
-              <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90 text-white font-semibold transition-all shadow-lg shadow-primary/20 mt-2" disabled={loading}>
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Sign Up"}
+              <Button 
+                type="submit" 
+                variant="gradient"
+                className="w-full h-12 text-sm font-black transition-all shadow-xl shadow-primary/20 mt-2 rounded-xl" 
+                disabled={loading}
+              >
+                {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "PROVISON ACCOUNT"}
               </Button>
             </CardContent>
           </form>
-          <CardFooter className="flex flex-col gap-4 border-t border-white/5 pt-6 mt-2">
-            <div className="text-center text-sm text-gray-400">
-              Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline font-medium">
+          <CardFooter className="flex flex-col gap-4 border-t border-white/5 pt-6 bg-white/5 mt-4">
+            <div className="text-center text-sm text-white/40">
+              Already standardized?{" "}
+              <Link href="/login" className="text-primary hover:underline font-bold decoration-2 underline-offset-4">
                 Sign in
               </Link>
             </div>

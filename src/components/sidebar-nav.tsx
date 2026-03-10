@@ -29,7 +29,7 @@ const menuItems = [
 ];
 
 const CodeClarityLogo = () => (
-  <div className="flex items-center gap-3 px-2 py-4">
+  <Link href="/" className="flex items-center gap-3 px-2 py-4 hover:opacity-80 transition-opacity">
     <div className="bg-primary p-2 rounded-xl shadow-lg shadow-primary/20">
       <Code2 className="text-white h-6 w-6" />
     </div>
@@ -41,7 +41,7 @@ const CodeClarityLogo = () => (
         Pro Account
       </span>
     </div>
-  </div>
+  </Link>
 );
 
 export function SidebarNav() {
@@ -82,17 +82,6 @@ export function SidebarNav() {
       <SidebarFooter className="p-4 mt-auto">
         {user && (
           <div className="space-y-4">
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
-              onClick={signOut}
-            >
-              <LogOut className="mr-3 h-4 w-4" />
-              <span className="group-data-[collapsible=icon]:hidden">Sign Out</span>
-            </Button>
-            
-            <SidebarSeparator className="bg-border/50" />
-            
             <div className="px-2 py-2 group-data-[collapsible=icon]:hidden">
                <div className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mb-1">Status</div>
                <div className="flex items-center gap-2">
