@@ -68,7 +68,13 @@ const generateReportFlow = ai.defineFlow(
     outputSchema: GenerateReportOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
+    // Truncate code to stay within Groq's limits
+    const MAX_CODE_CHARS = 15000;
+    const code = input.code.length > MAX_CODE_CHARS
+      ? input.code.substring(0, MAX_CODE_CHARS) + "\n\n... (code truncated for report generation)"
+      : input.code;
+
+    const { output } = await prompt({ ...input, code });
     return output!;
   }
 );

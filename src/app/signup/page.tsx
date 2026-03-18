@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -42,26 +43,26 @@ export default function SignupPage() {
         <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/20 rounded-full blur-[120px] animate-pulse delay-700"></div>
         <div className="absolute inset-0 noise opacity-20"></div>
       </div>
- 
-       <motion.div 
-         initial={{ opacity: 0, y: 20 }}
-         animate={{ opacity: 1, y: 0 }}
-         transition={{ duration: 0.5 }}
-         className="relative z-10 w-full max-w-md px-4"
-       >
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-md px-4"
+      >
         <Card className="glass border-white/10 shadow-2xl backdrop-blur-2xl bg-black/60 text-white overflow-hidden">
           <CardHeader className="space-y-1 text-center pb-8 border-b border-white/5 mb-6">
-             <div className="flex justify-center mb-6">
-               <div className="p-4 bg-primary/10 rounded-3xl border border-primary/20 shadow-lg shadow-primary/10">
-                  <Image
-                    src="/logo.png"
-                    alt="CodeClarity Logo"
-                    width={56}
-                    height={56}
-                    className="rounded-xl"
-                  />
-               </div>
-             </div>
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-primary/10 rounded-3xl border border-primary/20 shadow-lg shadow-primary/10">
+                <Image
+                  src="/logo.png"
+                  alt="CodeClarity Logo"
+                  width={56}
+                  height={56}
+                  className="rounded-xl"
+                />
+              </div>
+            </div>
             <CardTitle className="text-4xl font-black tracking-tight text-white mb-2">
               <span className="text-gradient">Create Account</span>
             </CardTitle>
@@ -101,19 +102,19 @@ export default function SignupPage() {
                   Minimum 6 characters for enterprise-grade security.
                 </p>
               </div>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 variant="gradient"
-                className="w-full h-12 text-sm font-black transition-all shadow-xl shadow-primary/20 mt-2 rounded-xl" 
+                className="w-full h-12 text-sm font-black transition-all shadow-xl shadow-primary/20 mt-2 rounded-xl"
                 disabled={loading}
               >
-                {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "PROVISON ACCOUNT"}
+                {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "PROVISION ACCOUNT"}
               </Button>
             </CardContent>
           </form>
           <CardFooter className="flex flex-col gap-4 border-t border-white/5 pt-6 bg-white/5 mt-4">
             <div className="text-center text-sm text-white/40">
-              Already standardized?{" "}
+              Already have an account?{" "}
               <Link href="/login" className="text-primary hover:underline font-bold decoration-2 underline-offset-4">
                 Sign in
               </Link>

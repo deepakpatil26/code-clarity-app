@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -453,38 +454,51 @@ export function CodeAnalysisViewer() {
     <div className="flex h-full gap-4 flex-col md:flex-row">
       {/* History Sidebar */}
       {user && (
-        <div
-          className={`${showHistory ? "w-full md:w-64" : "w-0 md:w-12"
-            } transition-all duration-300 border-r md:border-r flex flex-col bg-background overflow-hidden relative`}
-        >
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-2 right-2 z-10"
-            onClick={() => setShowHistory(!showHistory)}
-          >
-            <Clock className={`h-4 w-4 ${showHistory ? "" : "md:block hidden"}`} />
-          </Button>
+        <>
+          {/* Mobile overlay */}
           {showHistory && (
-            <ScrollArea className="flex-1 mt-10">
-              <div className="p-2 space-y-2">
-                <h3 className="font-semibold text-sm mb-2 px-2">History</h3>
-                {history.map((record) => (
-                  <div
-                    key={record.id}
-                    className="p-2 text-sm border rounded hover:bg-accent cursor-pointer"
-                    onClick={() => handleHistoryItemClick(record)}
-                  >
-                    <div className="font-medium truncate">{record.fileName}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {new Date(record.timestamp).toLocaleDateString()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
+            <div
+              className="fixed inset-0 z-40 bg-black/50 md:hidden"
+              onClick={() => setShowHistory(false)}
+            />
           )}
-        </div>
+          <div
+            className={`
+              fixed md:relative inset-y-0 left-0 z-50 md:z-auto
+              ${showHistory ? "w-72 md:w-64" : "w-0 md:w-12"}
+              transition-all duration-300 border-r flex flex-col bg-background overflow-hidden
+              shadow-xl md:shadow-none
+            `}
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 z-10"
+              onClick={() => setShowHistory(!showHistory)}
+            >
+              <Clock className="h-4 w-4" />
+            </Button>
+            {showHistory && (
+              <ScrollArea className="flex-1 mt-10">
+                <div className="p-2 space-y-2">
+                  <h3 className="font-semibold text-sm mb-2 px-2">History</h3>
+                  {history.map((record) => (
+                    <div
+                      key={record.id}
+                      className="p-2 text-sm border rounded hover:bg-accent cursor-pointer"
+                      onClick={() => handleHistoryItemClick(record)}
+                    >
+                      <div className="font-medium truncate">{record.fileName}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {new Date(record.timestamp).toLocaleDateString()}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            )}
+          </div>
+        </>
       )}
 
       <div className="flex-1 flex flex-col h-full overflow-hidden min-w-0">

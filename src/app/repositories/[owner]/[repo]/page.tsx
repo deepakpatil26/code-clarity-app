@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
@@ -17,17 +18,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { 
-  GitPullRequest, 
-  Loader2, 
-  Play, 
-  ChevronRight, 
-  BarChart2, 
-  ArrowLeft, 
-  Bot, 
-  ExternalLink, 
-  GitMerge, 
-  MessageSquare 
+import {
+  GitPullRequest,
+  Loader2,
+  Play,
+  ChevronRight,
+  BarChart2,
+  ArrowLeft,
+  Bot,
+  ExternalLink,
+  GitMerge,
+  MessageSquare
 } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { listPullRequests } from "@/ai/flows/list-pull-requests-flow";
@@ -169,7 +170,7 @@ export default function PullRequestsPage() {
             We lost access to your GitHub token. Please return to the dashboard to reconnect and resume analysis.
           </p>
           <Button asChild className="rounded-full px-6 bg-primary hover:bg-primary/90">
-             <Link href="/repositories">Return to Dashboard</Link>
+            <Link href="/repositories">Return to Dashboard</Link>
           </Button>
         </div>
       );
@@ -234,29 +235,32 @@ export default function PullRequestsPage() {
                     addSuffix: true,
                   })}
                 </TableCell>
-                <TableCell className="text-right space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleAnalyze(pr)}
-                    disabled={analyzingPr === pr.id}
-                  >
-                    {analyzingPr === pr.id ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                      <Bot className="mr-2 h-4 w-4" />
-                    )}
-                    Analyze
-                  </Button>
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link
-                      href={pr.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-2 flex-wrap">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleAnalyze(pr)}
+                      disabled={analyzingPr === pr.id}
+                      className="rounded-full"
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" /> View
-                    </Link>
-                  </Button>
+                      {analyzingPr === pr.id ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Bot className="mr-2 h-4 w-4" />
+                      )}
+                      Analyze
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild className="rounded-full">
+                      <Link
+                        href={pr.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -275,28 +279,29 @@ export default function PullRequestsPage() {
         title={selectedPrTitle}
         code={currentDiff}
       />
-      <div className="flex-1 p-4 lg:p-6 xl:p-8">
+      <div className="container mx-auto py-6 px-4 md:px-8 max-w-7xl">
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <Button
                 variant="outline"
                 size="icon"
+                className="shrink-0 self-start sm:self-auto"
                 onClick={() => router.back()}
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <CardTitle className="flex items-center gap-2">
-                  <GitPullRequest className="h-6 w-6" />
+                  <GitPullRequest className="h-5 w-5 shrink-0" />
                   Pull Requests
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="truncate">
                   Open pull requests for{" "}
                   <span className="font-semibold text-primary">{`${owner}/${repo}`}</span>
                 </CardDescription>
               </div>
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" className="shrink-0 self-start sm:self-auto">
                 <Link href={`/dashboard/${owner}/${repo}`}>View Analytics</Link>
               </Button>
             </div>

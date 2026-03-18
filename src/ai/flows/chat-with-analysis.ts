@@ -1,6 +1,6 @@
 "use server";
 
-import { ai, geminiModel } from "../genkit";
+import { ai, aiModel } from "../genkit";
 import { ChatWithAnalysisInput, ChatWithAnalysisOutput, ChatWithAnalysisInputSchema, ChatWithAnalysisOutputSchema } from "../schemas/chat-analysis";
 
 /**
@@ -19,13 +19,19 @@ const chatWithAnalysisFlow = ai.defineFlow(
   async (input) => {
     const { codeContext, finding, userMessage } = input;
     
+    // Truncate code context to stay within Groq's limits
+    const MAX_CONTEXT_CHARS = 15000;
+    const truncatedContext = codeContext.length > MAX_CONTEXT_CHARS 
+      ? codeContext.substring(0, MAX_CONTEXT_CHARS) + "\n... (truncated for brevity)"
+      : codeContext;
+
     // @ts-ignore - Genkit 0.5+ overload resolution
     const response = await ai.generate({
-      model: geminiModel,
+      model: aiModel,
       system: `You are an expert software engineer explaining a code review finding.
       
 Code Context:
-${codeContext}
+${truncatedContext}
       
 Finding: "${finding}"
       

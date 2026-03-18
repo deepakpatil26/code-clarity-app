@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
-  <img src="https://img.shields.io/badge/Google%20Gemini-8E77F7?style=for-the-badge&logo=google-gemini&logoColor=white" alt="Gemini" />
+  <img src="https://img.shields.io/badge/Groq-f55036?style=for-the-badge&logo=groq&logoColor=white" alt="Groq" />
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" />
 </div>
 
@@ -22,11 +22,13 @@
 
 CodeClarity Pro isn't just a linter — it's a deep-thinking AI collaborator. It understands the context of your changes, finds subtle bugs, and suggests modern best practices in real-time.
 
-- 🤖 **Gemini 2.0 Engine**: Powered by the latest Google AI for deep semantic code understanding.
+- ⚡ **Groq LPU™ Engine**: Powered by Groq's Lighting-Fast LPU™ for analysis in seconds (Llama 3.3 70B Versatile).
+- 🧬 **Diff-Guard™ Technology**: Advanced context truncation ensures even massive pull requests are analyzed without error.
+- 💬 **Interactive AI Explainer**: Click any finding to chat with the AI for a deeper explanation or a customized fix.
 - ⚡ **Automated PR Reviews**: Connect your GitHub and let the AI review every pull request automatically.
+- 📊 **Pro Dashboard**: Real-time quantitative health scores (A+ to F) for Security, Quality, and Performance.
+- 📄 **Professional Reports**: One-click download of branded technical reports for team sharing.
 - 🔒 **Security-First**: Detects SQL injection, hardcoded secrets, and XSS vulnerabilities before they ship.
-- 🗣️ **Voice Analysis**: Listen to your code review with high-quality text-to-speech.
-- 📊 **Quality Scoring**: Quantitative metrics for maintainability, complexity, and performance.
 
 ---
 
@@ -59,7 +61,7 @@ A stunning, responsive interface built with **Vite**, **Tailwind CSS**, and **Fr
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 15 (App Router)
-- **AI**: Genkit + Gemini 2.0 Flash
+- **AI**: Genkit + Groq (Llama 3.3 70B / Mistral)
 - **Database**: Firestore (NoSQL)
 - **Auth**: Firebase Auth (GitHub + Email)
 - **Queueing**: BullMQ + Redis (for async PR analysis)
@@ -83,8 +85,10 @@ npm install
 Create a `.env.local` file with:
 
 ```env
-# AI
-GEMINI_API_KEY=your_key
+# AI (Groq Setup)
+OPENAI_API_KEY=gsk_your_groq_key_here
+OPENAI_BASE_URL=https://api.groq.com/openai/v1
+GROQ_API_KEY=gsk_your_groq_key_here
 
 # Firebase (Client)
 NEXT_PUBLIC_FIREBASE_API_KEY=...
