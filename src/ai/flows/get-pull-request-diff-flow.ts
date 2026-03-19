@@ -1,33 +1,32 @@
 "use server";
 /**
- * @fileOverview A flow for fetching the diff of a pull request.
+ * @fileOverview A server action for fetching the diff of a pull request.
  *
  * - getPullRequestDiff - A function that fetches a PR diff using a GitHub auth token.
  */
 
-import { ai } from "@/ai/genkit";
+import { Octokit } from "octokit";
 import {
   GetPullRequestDiffInput,
-  GetPullRequestDiffInputSchema,
   GetPullRequestDiffOutput,
-  GetPullRequestDiffOutputSchema,
 } from "@/ai/schemas/github";
-import { getPullRequestDiffTool } from "@/ai/tools/github";
 
 export async function getPullRequestDiff(
   input: GetPullRequestDiffInput
 ): Promise<GetPullRequestDiffOutput> {
-  return getPullRequestDiffFlow(input);
-}
-
-const getPullRequestDiffFlow = ai.defineFlow(
-  {
-    name: "getPullRequestDiffFlow",
-    inputSchema: GetPullRequestDiffInputSchema,
-    outputSchema: GetPullRequestDiffOutputSchema,
-  },
-  async (input) => {
-    const diff = await getPullRequestDiffTool(input);
-    return { diff };
+  const octokit = new Octokit({ auth: input.authToken });
+  try {
+    const response = await octokit.rest.pulls.get({
+      owner: input.owner,
+      repo: input.repo,
+      pull_number: input.pullNumber,
+      mediaType: {
+        format: "diff",
+      },
+    });
+    return { diff: response.data as unknown as string };
+  } catch (error) {
+    console.error("Failed to fetch pull request diff from GitHub:", error);
+    throw new Error("Could not retrieve pull request diff from GitHub.");
   }
-);
+}
