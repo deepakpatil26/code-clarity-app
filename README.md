@@ -32,9 +32,17 @@ CodeClarity Pro isn't just a linter — it's a deep-thinking AI collaborator. It
 
 ---
 
-## 📸 Experience the Future
+## 📸 Experience CodeClarity Pro
 
-![CodeClarity Pro Desktop Mockup](public/hero-mockup.png)
+![CodeClarity Pro Homepage](public/assets/homepage.png)
+_The next-generation landing page for AI-driven code intelligence._
+
+### 🍱 Feature Highlights
+
+|              User Dashboard               |            AI Analysis Results             |
+| :---------------------------------------: | :----------------------------------------: |
+| ![Dashboard](public/assets/dashboard.png) |  ![Analysis](public/assets/analysis.png)   |
+|    Track your history & health scores     | Deep-dive into security & quality findings |
 
 ---
 

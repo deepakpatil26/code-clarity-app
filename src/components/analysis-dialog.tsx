@@ -117,16 +117,16 @@ function MetricCard({
   colorClass: string;
 }) {
   return (
-    <div className="bg-card/40 border border-primary/10 rounded-2xl p-4 flex flex-col gap-3 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="bg-card/40 border border-primary/10 rounded-2xl p-4 md:p-5 flex flex-col gap-3 backdrop-blur-md shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300 group">
       <div className="flex items-center justify-between">
-        <div className={`p-2 rounded-xl bg-opacity-10 ${colorClass.replace('text-', 'bg-')} ${colorClass}`}>
-          <Icon className="h-4 w-4" />
+        <div className={`p-2.5 rounded-xl bg-opacity-10 ${colorClass.replace('text-', 'bg-')} ${colorClass} group-hover:scale-110 transition-transform`}>
+          <Icon className="h-4 w-4 md:h-5 md:w-5" />
         </div>
-        <span className="text-xl font-black tabular-nums">{value}/10</span>
+        <span className="text-xl md:text-2xl font-black tabular-nums tracking-tighter">{value}/10</span>
       </div>
-      <div className="space-y-1.5">
-        <p className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">{label}</p>
-        <Progress value={value * 10} className={`h-1.5 ${colorClass.replace('text-', 'bg-')}/20`} />
+      <div className="space-y-2">
+        <p className="text-[10px] uppercase font-black tracking-[0.15em] text-muted-foreground/80">{label}</p>
+        <Progress value={value * 10} className={`h-1.5 md:h-2 ${colorClass.replace('text-', 'bg-')}/20`} />
       </div>
     </div>
   );
@@ -134,11 +134,11 @@ function MetricCard({
 
 function MetricsDashboard({ summary }: { summary: NonNullable<SuggestCodeImprovementsOutput["summary"]> }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      <div className="md:col-span-1 bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-1 backdrop-blur-md">
-        <Award className="h-6 w-6 text-primary mb-1" />
-        <span className="text-4xl font-black text-foreground">{summary.overallGrade}</span>
-        <p className="text-[10px] uppercase font-black tracking-tighter text-muted-foreground">Overall Grade</p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <div className="lg:col-span-1 bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/20 rounded-2xl p-6 flex flex-col items-center justify-center gap-2 backdrop-blur-xl shadow-lg">
+        <Award className="h-8 w-8 text-primary mb-1 animate-bounce-slow" />
+        <span className="text-5xl font-black text-foreground drop-shadow-lg">{summary.overallGrade}</span>
+        <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground opacity-80">Project Health</p>
       </div>
       <MetricCard
         label="Security"
@@ -259,9 +259,9 @@ export function AnalysisDialog({
           return (
             <div
               key={index}
-              className={`group flex flex-col gap-4 p-5 rounded-2xl border transition-all duration-300 ${isError
+              className={`group flex flex-col gap-4 p-4 md:p-6 rounded-2xl border transition-all duration-300 ${isError
                   ? "bg-destructive/5 border-destructive/20 hover:border-destructive/40"
-                  : "bg-card hover:bg-accent/5 hover:border-primary/30 shadow-sm hover:shadow-md"
+                  : "bg-card/30 hover:bg-accent/5 hover:border-primary/30 shadow-sm hover:shadow-xl hover:translate-y-[-2px] backdrop-blur-sm"
                 }`}
             >
               <div className="flex items-start gap-4">
@@ -336,78 +336,85 @@ export function AnalysisDialog({
       </div>
     );
   };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="dark text-foreground sm:max-w-3xl glass p-0 border border-white/10 overflow-hidden max-h-[90vh] flex flex-col bg-black/90 backdrop-blur-2xl shadow-2xl">
-        <div className="p-6 md:p-8 bg-gradient-to-br from-primary/10 via-background/50 to-accent/5 border-b border-white/5">
-          <DialogHeader>
-            <div className="flex items-center gap-3 mb-2">
-              <Badge className="bg-primary text-white hover:bg-primary px-3 shadow-lg shadow-primary/20">AI Review</Badge>
-              <span className="text-xs text-muted-foreground font-medium tracking-wider uppercase">V1.0 Pro</span>
+      <DialogContent className="dark text-foreground sm:max-w-4xl glass p-0 border border-white/10 overflow-hidden w-full h-full max-h-none sm:h-auto sm:max-h-[90vh] sm:rounded-3xl rounded-none flex flex-col bg-black/95 backdrop-blur-3xl shadow-2xl transition-all duration-500 ease-in-out">
+        <div className="p-6 md:p-10 bg-gradient-to-br from-primary/10 via-background/40 to-accent/5 border-b border-white/5 shrink-0">
+          <DialogHeader className="text-left">
+            <div className="flex items-center gap-3 mb-3">
+              <Badge className="bg-primary text-white hover:bg-primary px-3 shadow-lg shadow-primary/20 animate-pulse-slow">AI Review</Badge>
+              <span className="text-[10px] md:text-xs text-muted-foreground font-black tracking-[0.2em] uppercase opacity-70">CodeClarity Pro V1.0</span>
             </div>
-            <DialogTitle className="text-2xl font-extrabold tracking-tight line-clamp-1">
+            <DialogTitle className="text-2xl md:text-3xl font-black tracking-tighter line-clamp-2 leading-tight">
               {title}
             </DialogTitle>
-            <DialogDescription className="text-base text-muted-foreground">
-              Reviewing your pull request for quality, security, and performance.
+            <DialogDescription className="text-sm md:text-base text-muted-foreground mt-2 max-w-2xl leading-relaxed">
+              Deep-scanning your pull request using <span className="text-primary font-bold">Llama 3.3 (Groq)</span> for elite quality, security, and performance.
             </DialogDescription>
           </DialogHeader>
         </div>
 
-        <ScrollArea className="flex-1 px-6 md:px-8 py-2 overflow-y-auto">
-          {renderContent()}
-          <div className="h-6" /> {/* Spacer */}
+        <ScrollArea className="flex-1 px-4 md:px-10 py-4 overflow-y-auto custom-scrollbar">
+          <div className="max-w-4xl mx-auto">
+            {renderContent()}
+          </div>
+          <div className="h-10" /> {/* Spacer */}
         </ScrollArea>
 
-        <div className="p-6 md:p-8 bg-secondary/10 border-t border-white/5 backdrop-blur-md">
-          <DialogFooter className="flex flex-col sm:flex-col gap-4">
+        <div className="p-6 md:p-10 bg-secondary/20 border-t border-white/10 backdrop-blur-md shrink-0">
+          <DialogFooter className="flex flex-col gap-6">
             {audioSrc && (
-              <div className="w-full bg-background/50 rounded-xl p-3 border shadow-inner overflow-hidden animate-in fade-in slide-in-from-bottom-2">
-                <audio controls autoPlay className="w-full h-10">
+              <div className="w-full bg-black/60 rounded-2xl p-4 border border-primary/20 shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="flex items-center gap-3 mb-2 px-1">
+                  <div className="h-2 w-2 rounded-full bg-primary animate-ping" />
+                  <span className="text-[10px] font-bold text-primary uppercase tracking-widest">AI Narrator Is Speaking</span>
+                </div>
+                <audio controls autoPlay className="w-full h-10 filter invert brightness-100 contrast-125">
                   <source src={audioSrc} type="audio/wav" />
                 </audio>
               </div>
             )}
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col md:flex-row items-center gap-3 w-full">
               <Button
                 variant="gradient"
                 onClick={handleListen}
                 disabled={isGeneratingAudio || !result || result.suggestions.length === 0}
-                className="w-full sm:flex-1 rounded-xl h-12 shadow-lg shadow-primary/20"
+                className="w-full md:flex-1 rounded-2xl h-14 text-base font-black shadow-xl shadow-primary/10 hover:shadow-primary/30 transition-all active:scale-[0.98]"
               >
                 {isGeneratingAudio ? (
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <Loader2 className="mr-3 h-5 w-5 animate-spin" />
                 ) : (
-                  <Volume2 className="mr-2 h-5 w-5" />
+                  <Volume2 className="mr-3 h-5 w-5" />
                 )}
-                Listen to Full Analysis
+                {isGeneratingAudio ? "Generating Narrator..." : "Listen to Analysis"}
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => result && generateAnalysisReport(title, result)}
-                disabled={!result || result.suggestions.length === 0}
-                className="w-full sm:w-auto rounded-xl h-12 px-6 font-semibold hover:bg-background border-primary/20 text-primary hover:text-primary"
-              >
-                <Download className="mr-2 h-5 w-5" />
-                Download Report
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => result && generateAnalysisReportPdf(title, result)}
-                disabled={!result || result.suggestions.length === 0}
-                className="w-full sm:w-auto rounded-xl h-12 px-6 font-semibold hover:bg-background border-primary/20 text-primary hover:text-primary"
-              >
-                <Download className="mr-2 h-5 w-5" />
-                Download PDF
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                className="w-full sm:w-auto rounded-xl h-12 px-8 font-semibold hover:bg-background"
-              >
-                Dismiss
-              </Button>
+              <div className="flex gap-3 w-full md:w-auto overflow-x-auto pb-1 no-scrollbar shrink-0">
+                <Button
+                  variant="outline"
+                  onClick={() => result && generateAnalysisReport(title, result)}
+                  disabled={!result || result.suggestions.length === 0}
+                  className="flex-1 md:flex-none rounded-2xl h-14 px-6 font-bold hover:bg-white/10 border-white/10 text-foreground transition-all active:scale-[0.98]"
+                >
+                  <Download className="mr-2 h-5 w-5 opacity-70" />
+                  HTML
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => result && generateAnalysisReportPdf(title, result)}
+                  disabled={!result || result.suggestions.length === 0}
+                  className="flex-1 md:flex-none rounded-2xl h-14 px-6 font-bold hover:bg-white/10 border-white/10 text-foreground transition-all active:scale-[0.98]"
+                >
+                  <Download className="mr-2 h-5 w-5 opacity-70" />
+                  PDF
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => onOpenChange(false)}
+                  className="flex-1 md:flex-none rounded-2xl h-14 px-8 font-black bg-white/5 hover:bg-white/10 border border-white/5 transition-all active:scale-[0.98]"
+                >
+                  Dismiss
+                </Button>
+              </div>
             </div>
           </DialogFooter>
         </div>
